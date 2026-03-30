@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE Revision Timetable</title>
+<meta name="theme-color" content="#185FA5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Revision">
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f5f5f7;--bg3:#e8e8ea;
+  --text:#1a1a1a;--text2:#555;--text3:#888;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+  --blue:#185FA5;--blue-light:#ddeeff;
+  --radius:10px;--radius-sm:6px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1c1c1e;--bg2:#2c2c2e;--bg3:#3a3a3c;
+    --text:#f5f5f7;--text2:#aaa;--text3:#666;
+    --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.2);
+    --blue:#5b9fd4;--blue-light:#1a2e42;
+  }
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--bg);border-bottom:0.5px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:17px;font-weight:600}
+header span{font-size:12px;color:var(--text3)}
+.main{padding:16px;max-width:1100px;margin:0 auto}
+.top-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:600px){.top-grid{grid-template-columns:1fr}}
+.card{background:var(--bg2);border-radius:var(--radius);padding:14px}
+.card h3{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+.conf-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.conf-label{font-size:12px;color:var(--text);width:78px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conf-bar{flex:1;height:7px;background:var(--border);border-radius:4px;cursor:pointer}
+.conf-fill{height:100%;border-radius:4px;transition:width .2s}
+.conf-val{font-size:11px;color:var(--text3);width:22px;text-align:right;flex-shrink:0}
+.stats{display:flex;gap:10px;margin-bottom:12px}
+.stat{flex:1;background:var(--bg2);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.stat-n{font-size:24px;font-weight:600;color:var(--text)}
+.stat-l{font-size:10px;color:var(--text3);margin-top:2px}
+.week-nav{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.week-nav button{font-size:14px;padding:6px 14px;border-radius:var(--radius-sm);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer}
+.week-nav button:hover{background:var(--bg3)}
+.week-nav button:disabled{opacity:.35;cursor:default}
+.week-label{font-size:14px;font-weight:500;flex:1}
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.leg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed;min-width:520px}
+th{font-size:11px;font-weight:500;color:var(--text2);padding:6px 3px;text-align:center;border-bottom:0.5px solid var(--border)}
+th.tc{width:52px;text-align:left;font-size:10px}
+td{padding:2px;vertical-align:top}
+td.time-cell{font-size:10px;color:var(--text3);padding:5px 3px;white-space:nowrap;background:var(--bg2);border-right:0.5px solid var(--border)}
+.slot{border-radius:5px;padding:5px 6px;display:flex;flex-direction:column;justify-content:center;cursor:grab;position:relative;border-left:3px solid transparent;min-height:56px;transition:opacity .15s;user-select:none}
+.slot:active{cursor:grabbing}
+.slot:hover .slot-actions{opacity:1}
+.slot.dragging{opacity:.3}
+.slot.done{opacity:.38}
+.slot.done .slot-sub{text-decoration:line-through}
+.slot-sub{font-size:11px;font-weight:600;line-height:1.3;pointer-events:none}
+.slot-dur{font-size:10px;opacity:.65;margin-top:2px;pointer-events:none}
+.slot-actions{position:absolute;top:3px;right:3px;display:flex;gap:3px;opacity:0;transition:opacity .15s}
+.slot-btn{font-size:11px;cursor:pointer;line-height:1;padding:3px 4px;border-radius:3px;background:rgba(0,0,0,0.07);border:none;color:inherit;display:flex;align-items:center;justify-content:center}
+.slot-btn:hover{background:rgba(0,0,0,0.15)}
+.drag-over{outline:2px dashed var(--blue)!important;outline-offset:-2px;border-radius:5px}
+.break-cell{border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);height:26px;background:var(--bg2)}
+.lunch-cell{border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--blue);height:34px;background:var(--blue-light)}
+
+/* Popup */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.popup{background:var(--bg);border-radius:var(--radius);padding:20px;width:100%;max-width:300px}
+.popup h3{font-size:15px;font-weight:600;margin-bottom:3px}
+.popup-sub{font-size:12px;color:var(--text3);margin-bottom:14px}
+.sub-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px}
+.sub-option{border-radius:var(--radius-sm);padding:8px 10px;cursor:pointer;border-left:3px solid transparent;font-size:12px;font-weight:500;transition:transform .1s}
+.sub-option:hover{transform:scale(1.02)}
+.sub-option.selected{box-shadow:0 0 0 2px var(--blue);transform:scale(1.02)}
+.popup-actions{display:flex;gap:8px;justify-content:flex-end}
+.popup-actions button{padding:7px 16px;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text)}
+.popup-actions .primary{background:var(--blue);color:#fff;border-color:transparent}
+.popup-actions button:hover{opacity:.85}
+
+.install-banner{display:none;background:var(--blue);color:#fff;padding:10px 16px;font-size:13px;align-items:center;justify-content:space-between;gap:10px}
+.install-banner button{background:rgba(255,255,255,0.2);border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="install-banner" id="install-banner">
+  <span>Install this app to your home screen</span>
+  <div style="display:flex;gap:8px">
+    <button id="install-btn">Install</button>
+    <button style="background:transparent;border:none;color:#fff;cursor:pointer;opacity:.7" id="dismiss-btn">✕</button>
+  </div>
+</div>
+
+<header>
+  <h1>GCSE Revision</h1>
+  <span id="header-week"></span>
+</header>
+
+<div class="main">
+  <div class="top-grid">
+    <div class="card">
+      <h3>Confidence levels</h3>
+      <div id="conf-rows"></div>
+    </div>
+    <div>
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">done</div></div>
+        <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">total</div></div>
+        <div class="stat"><div class="stat-n" id="s-pct">0%</div><div class="stat-l">complete</div></div>
+      </div>
+      <div class="card" style="font-size:12px;color:var(--text2);line-height:1.9">
+        <strong style="color:var(--text);font-weight:500">How to use</strong><br>
+        Drag slots to rearrange. Hover a slot to see buttons — ✎ changes the subject, ✓ marks it done. Click a confidence bar to update frequency.
+      </div>
+    </div>
+  </div>
+
+  <div class="week-nav">
+    <button id="prev-btn" onclick="changeWeek(-1)">&#8592;</button>
+    <span class="week-label" id="week-label"></span>
+    <button id="next-btn" onclick="changeWeek(1)">&#8594;</button>
+  </div>
+
+  <div class="legend" id="legend"></div>
+  <div class="tt-wrap"><table id="tt"></table></div>
+</div>
+
+<!-- Edit popup -->
+<div class="popup-overlay" id="popup" style="display:none" onclick="overlayClick(event)">
+  <div class="popup">
+    <h3>Change subject</h3>
+    <div class="popup-sub" id="popup-label"></div>
+    <div class="sub-grid" id="sub-grid"></div>
+    <div class="popup-actions">
+      <button onclick="closePopup()">Cancel</button>
+      <button class="primary" onclick="applyEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const WEEK_STARTS=['31 Mar','7 Apr','14 Apr','21 Apr','28 Apr','5 May','12 May','19 May'];
+
+const ROWS=[
+  {label:'9:00',  type:'session'},
+  {label:'10:00', type:'break',  tag:'15 min break'},
+  {label:'10:15', type:'session'},
+  {label:'11:15', type:'break',  tag:'15 min break'},
+  {label:'11:30', type:'session'},
+  {label:'12:30', type:'lunch',  tag:'Lunch — 2 hours'},
+  {label:'2:30',  type:'session'},
+  {label:'3:30',  type:'break',  tag:'15 min break'},
+  {label:'3:45',  type:'session'},
+  {label:'4:45',  type:'break',  tag:'15 min break'},
+  {label:'5:00',  type:'session'},
+];
+const SESSION_ROWS=ROWS.map((_,i)=>i).filter(i=>ROWS[i].type==='session');
+
+const SUBS={
+  'Maths':    {color:'#185FA5',light:'#ddeeff'},
+  'Comp Sci': {color:'#3B6D11',light:'#e5f5d5'},
+  'Eng Lang': {color:'#993C56',light:'#fce8ef'},
+  'Eng Lit':  {color:'#533AB7',light:'#eeedfe'},
+  'Chemistry':{color:'#BA7517',light:'#fdf0d5'},
+  'Physics':  {color:'#1D7AA0',light:'#dcf2fa'},
+  'Biology':  {color:'#1D9E75',light:'#ddf5ec'},
+  'History':  {color:'#D85A30',light:'#fdeee8'},
+  'Music':    {color:'#7B4EA0',light:'#f3eaff'},
+  'Drama':    {color:'#555',   light:'#f0f0f2'},
+};
+const subNames=Object.keys(SUBS);
+
+function loadState(){try{return JSON.parse(localStorage.getItem('gcse-state'))||{};}catch{return {};}}
+function saveState(){try{localStorage.setItem('gcse-state',JSON.stringify(state));}catch{}}
+
+let state=loadState();
+if(!state.confidence){state.confidence={};subNames.forEach(s=>state.confidence[s]=3);}
+if(!state.timetable)state.timetable={};
+if(state.currentWeek===undefined)state.currentWeek=0;
+
+function seededShuffle(arr,seed){
+  const a=[...arr];let s=seed>>>0;
+  for(let i=a.length-1;i>0;i--){s=(s*1664525+1013904223)>>>0;const j=s%(i+1);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function buildWeekPlan(wk){
+  const plan={};
+  DAYS.forEach((day,di)=>{
+    plan[day]={};
+    const queue=[];
+    subNames.forEach(s=>{const w=Math.max(1,6-state.confidence[s]);for(let i=0;i<w;i++)queue.push(s);});
+    const shuffled=seededShuffle(queue,(wk*7+di)*31);
+    SESSION_ROWS.forEach((rowIdx,si)=>{plan[day][rowIdx]={sub:shuffled[si%shuffled.length],done:false};});
+  });
+  return plan;
+}
+
+function getWeekPlan(){
+  const wk=state.currentWeek;
+  if(!state.timetable[wk])state.timetable[wk]=buildWeekPlan(wk);
+  return state.timetable[wk];
+}
+
+function rebuildWeek(){state.timetable[state.currentWeek]=buildWeekPlan(state.currentWeek);saveState();renderTable();updateStats();}
+
+// Popup
+let editTarget=null;
+let editSelected=null;
+
+function openEdit(day,row,e){
+  e.stopPropagation();
+  editTarget={day,row};
+  const plan=getWeekPlan();
+  editSelected=plan[day][row].sub;
+  document.getElementById('popup-label').textContent=`${day} · ${ROWS[row].label}`;
+  document.getElementById('sub-grid').innerHTML=subNames.map(s=>`
+    <div class="sub-option${s===editSelected?' selected':''}"
+      style="background:${SUBS[s].light};border-left-color:${SUBS[s].color};color:${SUBS[s].color}"
+      onclick="selectSub('${s}',this)">${s}</div>`).join('');
+  document.getElementById('popup').style.display='flex';
+}
+
+function selectSub(sub,el){
+  editSelected=sub;
+  document.querySelectorAll('.sub-option').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function applyEdit(){
+  if(!editTarget||!editSelected)return;
+  getWeekPlan()[editTarget.day][editTarget.row].sub=editSelected;
+  saveState();renderTable();updateStats();closePopup();
+}
+
+function closePopup(){document.getElementById('popup').style.display='none';editTarget=null;}
+function overlayClick(e){if(e.target===document.getElementById('popup'))closePopup();}
+
+// Drag
+let dragSrc=null;
+function onDS(e){dragSrc=e.currentTarget;dragSrc.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function onDE(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
+function onDO(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
+function onDP(e){
+  e.stopPropagation();e.preventDefault();
+  const tgt=e.currentTarget;tgt.classList.remove('drag-over');
+  if(!dragSrc||dragSrc===tgt)return;
+  const plan=getWeekPlan();
+  const sd=dragSrc.dataset.day,sr=parseInt(dragSrc.dataset.row);
+  const td2=tgt.dataset.day,tr=parseInt(tgt.dataset.row);
+  const tmp=plan[sd][sr];plan[sd][sr]=plan[td2][tr];plan[td2][tr]=tmp;
+  saveState();renderTable();updateStats();
+}
+
+function toggleDone(day,row,e){
+  e.stopPropagation();
+  const plan=getWeekPlan();
+  plan[day][row].done=!plan[day][row].done;
+  saveState();renderTable();updateStats();
+}
+
+function render(){
+  const wk=state.currentWeek;
+  document.getElementById('week-label').textContent=`Week ${wk+1} — ${WEEK_STARTS[wk]}`;
+  document.getElementById('header-week').textContent=WEEK_STARTS[wk];
+  document.getElementById('prev-btn').disabled=wk===0;
+  document.getElementById('next-btn').disabled=wk===7;
+  renderConf();renderLegend();renderTable();updateStats();
+}
+
+function renderConf(){
+  document.getElementById('conf-rows').innerHTML=subNames.map(s=>{
+    const c=state.confidence[s],pct=(c/5)*100,col=SUBS[s].color;
+    return `<div class="conf-row">
+      <span class="conf-label" title="${s}">${s}</span>
+      <div class="conf-bar" onclick="setConf('${s}',event)"><div class="conf-fill" style="width:${pct}%;background:${col}"></div></div>
+      <span class="conf-val">${c}/5</span>
+    </div>`;
+  }).join('');
+}
+
+function setConf(sub,e){
+  const pct=e.offsetX/e.currentTarget.offsetWidth;
+  state.confidence[sub]=Math.max(1,Math.min(5,Math.round(pct*5)||1));
+  rebuildWeek();renderConf();
+}
+
+function renderLegend(){
+  document.getElementById('legend').innerHTML=subNames.map(s=>
+    `<span class="leg"><span class="leg-dot" style="background:${SUBS[s].color}"></span>${s}</span>`
+  ).join('');
+}
+
+function renderTable(){
+  const plan=getWeekPlan();
+  const tt=document.getElementById('tt');
+  let html=`<thead><tr><th class="tc">Time</th>${DAYS.map(d=>`<th>${d}</th>`).join('')}</tr></thead><tbody>`;
+  ROWS.forEach((row,ri)=>{
+    if(row.type==='break'){
+      html+=`<tr><td class="time-cell" style="font-size:9px">${row.label}</td><td colspan="7"><div class="break-cell">${row.tag}</div></td></tr>`;
+    } else if(row.type==='lunch'){
+      html+=`<tr><td class="time-cell" style="font-size:9px">${row.label}</td><td colspan="7"><div class="lunch-cell">${row.tag}</div></td></tr>`;
+    } else {
+      html+=`<tr><td class="time-cell">${row.label}</td>`;
+      DAYS.forEach(day=>{
+        const cell=plan[day][ri];
+        if(!cell){html+=`<td></td>`;return;}
+        const {sub,done}=cell;const s=SUBS[sub];
+        html+=`<td><div class="slot${done?' done':''}" draggable="true"
+          style="background:${s.light};border-left-color:${s.color}"
+          data-day="${day}" data-row="${ri}"
+          ondragstart="onDS(event)" ondragend="onDE(event)" ondragover="onDO(event)" ondrop="onDP(event)">
+          <span class="slot-sub" style="color:${s.color}">${sub}</span>
+          <span class="slot-dur" style="color:${s.color}">1 hour</span>
+          <div class="slot-actions">
+            <button class="slot-btn" onclick="openEdit('${day}',${ri},event)" title="Change subject">✎</button>
+            <button class="slot-btn" onclick="toggleDone('${day}',${ri},event)">${done?'↩':'✓'}</button>
+          </div>
+        </div></td>`;
+      });
+      html+='</tr>';
+    }
+  });
+  html+='</tbody>';
+  tt.innerHTML=html;
+}
+
+function updateStats(){
+  const plan=getWeekPlan();let total=0,done=0;
+  DAYS.forEach(day=>SESSION_ROWS.forEach(ri=>{if(plan[day][ri]){total++;if(plan[day][ri].done)done++;}}));
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-pct').textContent=Math.round((done/total)*100)+'%';
+}
+
+function changeWeek(d){state.currentWeek=Math.max(0,Math.min(7,state.currentWeek+d));saveState();render();}
+
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install-banner').style.display='flex';});
+document.getElementById('install-btn').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('install-banner').style.display='none';});
+document.getElementById('dismiss-btn').addEventListener('click',()=>{document.getElementById('install-banner').style.display='none';});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+
+render();
+</script>
+</body>
+</html>
