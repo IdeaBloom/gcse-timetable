@@ -10,59 +10,67 @@
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#fff;--bg2:#f5f5f7;--bg3:#e8e8ea;--text:#1a1a1a;--text2:#555;--text3:#999;--border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.16);--blue:#185FA5;--r:10px;--rs:6px}
-@media(prefers-color-scheme:dark){:root{--bg:#1c1c1e;--bg2:#2c2c2e;--bg3:#3a3a3c;--text:#f5f5f7;--text2:#aaa;--text3:#666;--border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18)}}
+:root{
+  --bg:#fff;--bg2:#f5f5f7;--bg3:#e8e8ea;
+  --text:#1a1a1a;--text2:#555;--text3:#999;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.2);
+  --blue:#185FA5;--blue-bg:#ddeeff;
+  --r:10px;--rs:6px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1c1e;--bg2:#2c2c2e;--bg3:#3a3a3c;
+  --text:#f5f5f7;--text2:#aaa;--text3:#666;
+  --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.22);
+  --blue:#5b9fd4;--blue-bg:#1a2e42;
+}}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-header{background:var(--bg);border-bottom:0.5px solid var(--border);padding:13px 18px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between}
-header h1{font-size:16px;font-weight:600}
+header{background:var(--bg);border-bottom:0.5px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:17px;font-weight:600}
 header span{font-size:12px;color:var(--text3)}
-.main{padding:14px;max-width:1100px;margin:0 auto}
-.topgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-@media(max-width:580px){.topgrid{grid-template-columns:1fr}}
-.card{background:var(--bg2);border-radius:var(--r);padding:13px}
-.card-title{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.main{padding:16px;max-width:1100px;margin:0 auto}
 
-/* subject editor */
-.sub-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.dot-btn{width:18px;height:18px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0}
-.sub-input{flex:1;background:transparent;border:none;font-size:13px;color:var(--text);font-family:inherit;outline:none;border-bottom:0.5px solid transparent;padding:1px 0}
-.sub-input:focus{border-bottom-color:var(--border2)}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;line-height:1;padding:2px 4px}
-.del-btn:hover{color:#e24b4a}
-.add-sub-btn{background:none;border:0.5px dashed var(--border2);border-radius:var(--rs);padding:6px 10px;font-size:12px;color:var(--text2);cursor:pointer;width:100%;margin-top:4px;text-align:left}
-.add-sub-btn:hover{background:var(--bg3)}
+.topgrid{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:640px){.topgrid{grid-template-columns:1fr}}
+.panel{background:var(--bg2);border-radius:var(--r);padding:14px}
+.panel-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.panel-title{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.add-btn{font-size:11px;padding:3px 9px;border-radius:20px;border:0.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer}
+.add-btn:hover{background:var(--bg3)}
 
-/* stats */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat{background:var(--bg2);border-radius:var(--rs);padding:10px;text-align:center}
+.sub-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--border)}
+.sub-row:last-child{border-bottom:none}
+.sub-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;cursor:pointer;border:2px solid transparent}
+.sub-dot:hover{opacity:.8}
+.sub-name-input{flex:1;background:transparent;border:none;font-size:13px;color:var(--text);font-family:inherit;padding:0;outline:none}
+.sub-name-input:focus{background:var(--bg3);border-radius:4px;padding:1px 4px}
+.sub-time{font-size:11px;color:var(--text3);min-width:36px;text-align:right}
+.sub-del{font-size:14px;color:var(--text3);cursor:pointer;padding:0 2px;opacity:0;background:none;border:none;line-height:1}
+.sub-row:hover .sub-del{opacity:1}
+.sub-del:hover{color:#e24b4a}
+
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.stat{background:var(--bg2);border-radius:var(--rs);padding:12px;text-align:center}
 .stat-n{font-size:22px;font-weight:600;color:var(--text)}
-.stat-l{font-size:10px;color:var(--text3);margin-top:1px}
-.sub-times{max-height:140px;overflow-y:auto}
-.st-row{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:0.5px solid var(--border)}
-.st-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.st-name{font-size:12px;color:var(--text);flex:1}
-.st-time{font-size:12px;color:var(--text2);font-weight:500}
+.stat-l{font-size:10px;color:var(--text3);margin-top:2px}
+.hint{background:var(--bg2);border-radius:var(--rs);padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.7}
 
-/* week nav */
 .week-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.wbtn{font-size:13px;padding:5px 12px;border-radius:var(--rs);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer}
+.wbtn{font-size:14px;padding:5px 13px;border-radius:var(--rs);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer}
 .wbtn:hover{background:var(--bg3)}
 .wbtn:disabled{opacity:.3;cursor:default}
 .wlbl{font-size:13px;font-weight:500;flex:1}
 
-/* legend */
-.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
 .leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.leg-dot{width:8px;height:8px;border-radius:50%}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
-/* table */
 .tt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:500px;font-size:11px}
 th{font-size:11px;font-weight:500;color:var(--text2);padding:5px 3px;text-align:center;border-bottom:0.5px solid var(--border)}
 th.tc{width:50px;text-align:left;font-size:10px}
 td{padding:2px;vertical-align:top}
 .tcell{font-size:10px;color:var(--text3);padding:5px 3px;white-space:nowrap;background:var(--bg2);border-right:0.5px solid var(--border)}
-.slot{border-radius:5px;padding:5px 7px 5px 9px;min-height:54px;cursor:grab;position:relative;border-left:3px solid transparent;display:flex;flex-direction:column;justify-content:center}
+.slot{border-radius:5px;padding:5px 8px 5px 9px;min-height:54px;cursor:grab;position:relative;border-left:3px solid transparent;display:flex;flex-direction:column;justify-content:center;user-select:none}
 .slot:active{cursor:grabbing}
 .slot.done{opacity:.38}
 .slot.done .sname{text-decoration:line-through}
@@ -70,67 +78,61 @@ td{padding:2px;vertical-align:top}
 .drag-over{outline:2px dashed var(--blue)!important;outline-offset:-2px;border-radius:5px}
 .sname{font-size:11px;font-weight:500;line-height:1.3;pointer-events:none}
 .sdur{font-size:10px;opacity:.6;margin-top:1px;pointer-events:none}
-.dots-btn{position:absolute;top:3px;right:3px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:4px;cursor:pointer;font-size:13px;color:inherit;opacity:0;transition:opacity .1s;background:rgba(0,0,0,0.06);border:none;letter-spacing:1px}
+.dots-btn{position:absolute;top:3px;right:3px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:4px;cursor:pointer;font-size:14px;letter-spacing:1px;color:inherit;opacity:0;background:rgba(0,0,0,0.07);border:none;line-height:1}
 .slot:hover .dots-btn{opacity:1}
-.tick-badge{position:absolute;bottom:3px;right:4px;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;pointer-events:none}
-.break-cell{border-radius:5px;height:24px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);background:var(--bg2)}
-.lunch-cell{border-radius:5px;height:32px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--blue);background:#ddeeff}
+.done-badge{position:absolute;bottom:4px;right:5px;font-size:10px;pointer-events:none}
+.break-bar{border-radius:5px;height:24px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text3);background:var(--bg2)}
+.lunch-bar{border-radius:5px;height:32px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;background:var(--blue-bg);color:var(--blue)}
 
-/* dropdown menu */
-.menu{position:absolute;z-index:200;min-width:165px;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--rs);overflow:hidden}
-.menu-item{padding:9px 13px;font-size:13px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:9px}
-.menu-item:hover{background:var(--bg2)}
-.menu-sep{height:0.5px;background:var(--border);margin:2px 0}
+.menu{position:absolute;z-index:200;min-width:170px;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--rs);overflow:hidden}
+.mi{padding:9px 14px;font-size:13px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:9px}
+.mi:hover{background:var(--bg2)}
+.msep{height:0.5px;background:var(--border);margin:2px 0}
 
-/* modals */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
-.modal{background:var(--bg);border-radius:var(--r);padding:18px;width:100%;max-width:290px;border:0.5px solid var(--border)}
-.modal h3{font-size:14px;font-weight:500;margin-bottom:3px}
-.modal-sub{font-size:11px;color:var(--text3);margin-bottom:13px}
+.overlay{position:absolute;top:0;left:0;width:100%;background:rgba(0,0,0,0.45);display:flex;align-items:flex-start;justify-content:center;padding-top:40px;z-index:300}
+.modal{background:var(--bg);border-radius:var(--r);padding:18px;width:290px;border:0.5px solid var(--border2)}
+.modal h3{font-size:14px;font-weight:600;margin-bottom:3px}
+.modal-sub{font-size:11px;color:var(--text3);margin-bottom:14px}
 .sub-picker{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
-.spill{border-radius:5px;padding:7px 9px;font-size:12px;font-weight:500;cursor:pointer;border-left:3px solid transparent}
-.spill:hover{filter:brightness(.95)}
-.spill.sel{outline:2px solid var(--text);outline-offset:1px}
-.cpicker{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-.cswatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent}
-.cswatch.sel{border-color:var(--text)}
-.modal-btns{display:flex;gap:8px;justify-content:flex-end}
-.modal-btns button{padding:6px 14px;border-radius:var(--rs);font-size:12px;cursor:pointer;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text)}
-.modal-btns .save{background:var(--blue);color:#fff;border-color:transparent}
-
-/* colour picker popup for subject editor */
-.cp-popup{position:absolute;z-index:400;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--rs);padding:10px;display:flex;flex-wrap:wrap;gap:6px;width:158px}
+.sp{border-radius:5px;padding:7px 9px;font-size:12px;font-weight:500;cursor:pointer;border-left:3px solid transparent}
+.sp:hover{opacity:.8}
+.sp.sel{outline:2px solid var(--text);outline-offset:1px}
+.swatches{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.sw{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.sw.sel{border-color:var(--text)}
+.mbtns{display:flex;gap:8px;justify-content:flex-end}
+.mbtns button{padding:6px 14px;border-radius:var(--rs);font-size:12px;cursor:pointer;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text)}
+.mbtns .save{background:var(--blue);color:#fff;border-color:transparent}
 </style>
 </head>
 <body>
-<header><h1>GCSE Revision</h1><span id="hwk"></span></header>
+<header><h1>GCSE Revision</h1><span id="hdr-wk"></span></header>
 <div class="main" id="root">
 
 <div class="topgrid">
-  <!-- subjects panel -->
-  <div class="card">
-    <div class="card-title">Subjects</div>
-    <div id="sub-list"></div>
-    <button class="add-sub-btn" onclick="addSub()">+ Add subject</button>
-  </div>
-
-  <!-- stats panel -->
-  <div>
-    <div class="stats-grid" style="margin-bottom:10px">
-      <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">sessions done</div></div>
-      <div class="stat"><div class="stat-n" id="s-time">0h</div><div class="stat-l">time completed</div></div>
+  <div class="panel">
+    <div class="panel-hd">
+      <span class="panel-title">Subjects</span>
+      <button class="add-btn" onclick="addSub()">+ Add subject</button>
     </div>
-    <div class="card">
-      <div class="card-title">Time per subject (this week)</div>
-      <div class="sub-times" id="sub-times"></div>
+    <div id="sub-list"></div>
+  </div>
+  <div>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-n" id="st1">0</div><div class="stat-l">sessions done</div></div>
+      <div class="stat"><div class="stat-n" id="st2">0h</div><div class="stat-l">time completed</div></div>
+    </div>
+    <div class="panel" style="padding:10px 12px">
+      <div class="panel-title" style="margin-bottom:8px">Time per subject this week</div>
+      <div id="time-breakdown"></div>
     </div>
   </div>
 </div>
 
 <div class="week-row">
-  <button class="wbtn" id="pb" onclick="chWeek(-1)">&#8592;</button>
+  <button class="wbtn" id="pb" onclick="chWk(-1)">&#8592;</button>
   <span class="wlbl" id="wlbl"></span>
-  <button class="wbtn" id="nb" onclick="chWeek(1)">&#8594;</button>
+  <button class="wbtn" id="nb" onclick="chWk(1)">&#8594;</button>
 </div>
 <div class="legend" id="leg"></div>
 <div class="tt-wrap"><table id="tt"></table></div>
@@ -138,28 +140,28 @@ td{padding:2px;vertical-align:top}
 
 <script>
 const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const WS=['31 Mar','7 Apr','14 Apr','21 Apr','28 Apr','5 May','12 May','19 May'];
+const WK_STARTS=['31 Mar','7 Apr','14 Apr','21 Apr','28 Apr','5 May','12 May','19 May'];
 const ROWS=[
-  {t:'9:00',type:'s'},{t:'10:00',type:'b',tag:'15 min break'},
-  {t:'10:15',type:'s'},{t:'11:15',type:'b',tag:'15 min break'},
-  {t:'11:30',type:'s'},{t:'12:30',type:'l',tag:'Lunch — 2 hours'},
-  {t:'2:30',type:'s'},{t:'3:30',type:'b',tag:'15 min break'},
-  {t:'3:45',type:'s'},{t:'4:45',type:'b',tag:'15 min break'},
-  {t:'5:00',type:'s'},
+  {t:'9:00', tp:'s'},{t:'10:00',tp:'b',tag:'15 min break'},
+  {t:'10:15',tp:'s'},{t:'11:15',tp:'b',tag:'15 min break'},
+  {t:'11:30',tp:'s'},{t:'12:30',tp:'l',tag:'Lunch — 2 hours'},
+  {t:'2:30', tp:'s'},{t:'3:30', tp:'b',tag:'15 min break'},
+  {t:'3:45', tp:'s'},{t:'4:45', tp:'b',tag:'15 min break'},
+  {t:'5:00', tp:'s'},
 ];
-const SR=ROWS.map((_,i)=>i).filter(i=>ROWS[i].type==='s');
+const SROWS=ROWS.map((_,i)=>i).filter(i=>ROWS[i].tp==='s');
 
 const PALS=[
-  {c:'#185FA5',l:'#ddeeff',d:'#0C447C'},
-  {c:'#3B6D11',l:'#e5f5d5',d:'#27500A'},
-  {c:'#993C56',l:'#fce8ef',d:'#72243E'},
-  {c:'#533AB7',l:'#eeedfe',d:'#3C3489'},
-  {c:'#BA7517',l:'#fdf0d5',d:'#633806'},
-  {c:'#1D7AA0',l:'#dcf2fa',d:'#0a4a63'},
-  {c:'#1D9E75',l:'#ddf5ec',d:'#085041'},
-  {c:'#D85A30',l:'#fdeee8',d:'#712B13'},
-  {c:'#7B4EA0',l:'#f3eaff',d:'#4a2d6b'},
-  {c:'#888',   l:'#f0f0f2',d:'#444'},
+  {c:'#185FA5',bg:'#ddeeff',dk:'#0C447C'},
+  {c:'#3B6D11',bg:'#e5f5d5',dk:'#27500A'},
+  {c:'#993C56',bg:'#fce8ef',dk:'#72243E'},
+  {c:'#533AB7',bg:'#eeedfe',dk:'#3C3489'},
+  {c:'#BA7517',bg:'#fdf0d5',dk:'#633806'},
+  {c:'#1D7AA0',bg:'#dcf2fa',dk:'#0a4a63'},
+  {c:'#1D9E75',bg:'#ddf5ec',dk:'#085041'},
+  {c:'#D85A30',bg:'#fdeee8',dk:'#712B13'},
+  {c:'#7B4EA0',bg:'#f3eaff',dk:'#4a2d6b'},
+  {c:'#666',   bg:'#f0f0f2',dk:'#333'},
 ];
 
 const DEF_SUBS=[
@@ -173,10 +175,10 @@ try{S=JSON.parse(localStorage.getItem('gcse4'))||{};}catch{S={};}
 if(!S.subs)S.subs=DEF_SUBS.map(s=>({...s}));
 if(!S.tt)S.tt={};
 if(S.wk===undefined)S.wk=0;
-
 const save=()=>{try{localStorage.setItem('gcse4',JSON.stringify(S));}catch{}};
+
 const pal=s=>PALS[s.pi]||PALS[0];
-const getPal=name=>{const s=S.subs.find(x=>x.name===name);return s?pal(s):PALS[0];};
+const subByName=n=>S.subs.find(s=>s.name===n);
 
 function shuffle(arr,seed){
   const a=[...arr];let s=seed>>>0;
@@ -184,28 +186,24 @@ function shuffle(arr,seed){
   return a;
 }
 
-function buildWeek(wk){
+function buildWk(wk){
   const plan={};
   DAYS.forEach((day,di)=>{
     plan[day]={};
     const q=[];
-    S.subs.forEach(s=>{for(let i=0;i<3;i++)q.push(s.name);});
+    S.subs.forEach(s=>{for(let i=0;i<2;i++)q.push(s.name);});
     const sh=shuffle(q,(wk*7+di)*31);
-    SR.forEach((ri,si)=>{plan[day][ri]={sub:sh[si%sh.length],done:false};});
+    SROWS.forEach((ri,si)=>{plan[day][ri]={sub:sh[si%sh.length],done:false};});
   });
   return plan;
 }
 
-function getPlan(){
-  if(!S.tt[S.wk])S.tt[S.wk]=buildWeek(S.wk);
-  return S.tt[S.wk];
-}
+function getPlan(){if(!S.tt[S.wk])S.tt[S.wk]=buildWk(S.wk);return S.tt[S.wk];}
+function rebuildWk(){S.tt[S.wk]=buildWk(S.wk);save();renderTable();updateStats();}
 
-function rebuildWk(){S.tt[S.wk]=buildWeek(S.wk);save();renderTable();updateStats();}
-
-// ---- subject editor ----
-let cpPopup=null;
-function closeCp(){if(cpPopup){cpPopup.remove();cpPopup=null;}}
+let menuEl=null,modalEl=null,dragSrc=null;
+const closeMenu=()=>{if(menuEl){menuEl.remove();menuEl=null;}};
+const closeModal=()=>{if(modalEl){modalEl.remove();modalEl=null;}};
 
 function renderSubList(){
   const el=document.getElementById('sub-list');
@@ -215,203 +213,154 @@ function renderSubList(){
     const row=document.createElement('div');
     row.className='sub-row';
     row.innerHTML=`
-      <button class="dot-btn" style="background:${p.c}" title="Change colour" onclick="openCpPopup(${i},this)"></button>
-      <input class="sub-input" value="${s.name}" onchange="renameSub(${i},this.value)" onblur="renameSub(${i},this.value)">
-      <button class="del-btn" onclick="delSub(${i})" title="Remove">&#215;</button>`;
+      <div class="sub-dot" style="background:${p.c}" title="Change colour" onclick="openDotColor(${i})"></div>
+      <input class="sub-name-input" value="${s.name}" onblur="renameSub(${i},this.value)" onkeydown="if(event.key==='Enter')this.blur()">
+      <span class="sub-time" id="subtime-${i}">0h</span>
+      <button class="sub-del" title="Remove" onclick="delSub(${i})">×</button>`;
     el.appendChild(row);
   });
 }
 
-function openCpPopup(idx,btn){
-  closeCp();
-  cpPopup=document.createElement('div');
-  cpPopup.className='cp-popup';
-  PALS.forEach((p,pi)=>{
-    const sw=document.createElement('div');
-    sw.className='cswatch'+(S.subs[idx].pi===pi?' sel':'');
-    sw.style.background=p.c;
-    sw.onclick=()=>{S.subs[idx].pi=pi;save();closeCp();renderSubList();renderLegend();renderTable();};
-    cpPopup.appendChild(sw);
-  });
-  const rect=btn.getBoundingClientRect();
-  const root=document.getElementById('root');
-  const rr=root.getBoundingClientRect();
-  cpPopup.style.cssText=`top:${rect.bottom-rr.top+4}px;left:${rect.left-rr.left}px`;
-  root.appendChild(cpPopup);
-  setTimeout(()=>document.addEventListener('click',closeCpOut),0);
-}
-function closeCpOut(e){if(cpPopup&&!cpPopup.contains(e.target)){closeCp();document.removeEventListener('click',closeCpOut);}}
-
-function renameSub(idx,val){
-  val=val.trim();
-  if(!val||val===S.subs[idx].name)return;
-  const old=S.subs[idx].name;
-  S.subs[idx].name=val;
-  // update timetable cells
-  Object.values(S.tt).forEach(plan=>{
-    Object.values(plan).forEach(day=>{
-      Object.values(day).forEach(cell=>{if(cell.sub===old)cell.sub=val;});
-    });
-  });
-  save();renderSubList();renderLegend();renderTable();updateStats();
-}
-
-function delSub(idx){
-  if(S.subs.length<=1)return;
-  const name=S.subs[idx].name;
-  S.subs.splice(idx,1);
-  // replace deleted sub in timetable with first remaining sub
-  const fallback=S.subs[0].name;
-  Object.values(S.tt).forEach(plan=>{
-    Object.values(plan).forEach(day=>{
-      Object.values(day).forEach(cell=>{if(cell.sub===name)cell.sub=fallback;});
-    });
-  });
-  save();renderSubList();renderLegend();renderTable();updateStats();
-}
-
 function addSub(){
-  const existing=new Set(S.subs.map(s=>s.name));
-  const usedPi=new Set(S.subs.map(s=>s.pi));
-  const pi=PALS.findIndex((_,i)=>!usedPi.has(i));
-  let name='New subject';let n=2;
-  while(existing.has(name))name=`New subject ${n++}`;
-  S.subs.push({name,pi:pi>=0?pi:0});
-  save();renderSubList();renderLegend();
+  const pi=S.subs.length%PALS.length;
+  S.subs.push({name:'New subject',pi});
+  save();renderSubList();renderLegend();rebuildWk();
+  const inputs=document.querySelectorAll('.sub-name-input');
+  const last=inputs[inputs.length-1];
+  if(last){last.focus();last.select();}
 }
 
-// ---- stats ----
-function updateStats(){
-  const plan=getPlan();let tot=0,done=0;
-  const times={};S.subs.forEach(s=>times[s.name]=0);
-  DAYS.forEach(day=>SR.forEach(ri=>{
-    const c=plan[day][ri];if(!c)return;
-    tot++;
-    if(!times[c.sub])times[c.sub]=0;
-    if(c.done){done++;times[c.sub]+=1;}
-  }));
-  document.getElementById('s-done').textContent=done;
-  const hrs=(done*1);
-  document.getElementById('s-time').textContent=hrs<1?`${done*60}m`:`${hrs}h`;
-  const el=document.getElementById('sub-times');
-  el.innerHTML=S.subs.map(s=>{
-    const p=pal(s);const t=times[s.name]||0;
-    return `<div class="st-row">
-      <span class="st-dot" style="background:${p.c}"></span>
-      <span class="st-name">${s.name}</span>
-      <span class="st-time">${t>0?t+'h done':'—'}</span>
-    </div>`;
-  }).join('');
+function delSub(i){
+  if(S.subs.length<=1)return;
+  S.subs.splice(i,1);
+  save();renderSubList();renderLegend();rebuildWk();
 }
 
-// ---- legend ----
-function renderLegend(){
-  document.getElementById('leg').innerHTML=S.subs.map(s=>`
-    <span class="leg"><span class="leg-dot" style="background:${pal(s).c}"></span>${s.name}</span>`).join('');
-}
-
-// ---- table ----
-let menuEl=null;
-let overlayEl=null;
-function closeMenu(){if(menuEl){menuEl.remove();menuEl=null;}}
-function closeOverlay(){if(overlayEl){overlayEl.remove();overlayEl=null;}}
-
-function renderTable(){
-  closeMenu();
-  const plan=getPlan();
-  const tt=document.getElementById('tt');
-  let h=`<thead><tr><th class="tc">Time</th>${DAYS.map(d=>`<th>${d}</th>`).join('')}</tr></thead><tbody>`;
-  ROWS.forEach((row,ri)=>{
-    if(row.type==='b'){
-      h+=`<tr><td class="tcell" style="font-size:9px">${row.t}</td><td colspan="7"><div class="break-cell">${row.tag}</div></td></tr>`;
-    } else if(row.type==='l'){
-      h+=`<tr><td class="tcell" style="font-size:9px">${row.t}</td><td colspan="7"><div class="lunch-cell">${row.tag}</div></td></tr>`;
-    } else {
-      h+=`<tr><td class="tcell">${row.t}</td>`;
-      DAYS.forEach(day=>{
-        const cell=plan[day][ri];if(!cell){h+=`<td></td>`;return;}
-        const {sub,done}=cell;
-        const p=getPal(sub);
-        h+=`<td><div class="slot${done?' done':''}" draggable="true"
-          style="background:${p.l};border-left-color:${p.c}"
-          data-day="${day}" data-row="${ri}"
-          ondragstart="dS(event)" ondragend="dE(event)" ondragover="dO(event)" ondrop="dP(event)">
-          <span class="sname" style="color:${p.d}">${sub}</span>
-          <span class="sdur" style="color:${p.d}">1 hour</span>
-          ${done?`<span class="tick-badge" style="background:${p.c};color:${p.l}">✓</span>`:''}
-          <button class="dots-btn" style="color:${p.d}" onclick="openMenu('${day}',${ri},this);event.stopPropagation()">···</button>
-        </div></td>`;
-      });
-      h+='</tr>';
-    }
+function renameSub(i,val){
+  const clean=val.trim();
+  if(!clean){renderSubList();return;}
+  const oldName=S.subs[i].name;
+  S.subs[i].name=clean;
+  Object.keys(S.tt).forEach(wk=>{
+    const plan=S.tt[wk];
+    DAYS.forEach(day=>SROWS.forEach(ri=>{if(plan[day]&&plan[day][ri]&&plan[day][ri].sub===oldName)plan[day][ri].sub=clean;}));
   });
-  h+='</tbody>';
-  tt.innerHTML=h;
+  save();renderSubList();renderLegend();renderTable();updateStats();
+}
+
+function openDotColor(i){
+  closeMenu();closeModal();
+  const s=S.subs[i];
+  const root=document.getElementById('root');
+  modalEl=document.createElement('div');
+  modalEl.className='overlay';
+  modalEl.style.minHeight=root.scrollHeight+'px';
+  const swatches=PALS.map((p,pi)=>`<div class="sw${s.pi===pi?' sel':''}" style="background:${p.c}" onclick="pickDotColor(${i},${pi},this)"></div>`).join('');
+  modalEl.innerHTML=`<div class="modal"><h3>Change colour</h3><div class="modal-sub">Applies to all "${s.name}" slots</div><div class="swatches">${swatches}</div><div class="mbtns"><button onclick="closeModal()">Cancel</button><button class="save" onclick="applyDotColor(${i})">Save</button></div></div>`;
+  root.appendChild(modalEl);
+  modalEl.onclick=e=>{if(e.target===modalEl)closeModal();};
+  window._dc={i,pi:s.pi};
+}
+
+function pickDotColor(i,pi,el){
+  document.querySelectorAll('.sw').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  window._dc={i,pi};
+}
+
+function applyDotColor(i){
+  if(window._dc){S.subs[window._dc.i].pi=window._dc.pi;}
+  save();renderSubList();renderLegend();renderTable();closeModal();
 }
 
 function openMenu(day,row,btn){
-  closeMenu();closeOverlay();
+  closeMenu();closeModal();
   const plan=getPlan();
   const cell=plan[day][row];
   const rect=btn.getBoundingClientRect();
   const root=document.getElementById('root');
   const rr=root.getBoundingClientRect();
-  const top=rect.bottom-rr.top+4;
-  const left=Math.min(rect.left-rr.left,rr.width-175);
   menuEl=document.createElement('div');
   menuEl.className='menu';
-  menuEl.style.cssText=`top:${top}px;left:${left}px`;
+  menuEl.style.cssText=`top:${rect.bottom-rr.top+4}px;left:${Math.min(rect.left-rr.left,rr.width-180)}px`;
+  const done=cell.done;
   const items=[
-    {icon:'✎',label:'Change subject',fn:()=>{closeMenu();openSubModal(day,row);}},
+    {ic:'✎',lb:'Change subject',fn:()=>{closeMenu();openSubModal(day,row);}},
+    {ic:'🎨',lb:'Change colour',fn:()=>{closeMenu();openSlotColor(day,row);}},
     {sep:true},
-    {icon:cell.done?'↩':'✓',label:cell.done?'Mark not done':'Mark as done',fn:()=>{toggleDone(day,row);closeMenu();}},
+    {ic:done?'↩':'✓',lb:done?'Mark not done':'Mark as done',fn:()=>{toggleDone(day,row);closeMenu();}},
   ];
-  items.forEach(item=>{
-    if(item.sep){const d=document.createElement('div');d.className='menu-sep';menuEl.appendChild(d);return;}
-    const el=document.createElement('div');el.className='menu-item';
-    el.innerHTML=`<span style="width:16px;text-align:center">${item.icon}</span><span>${item.label}</span>`;
-    el.onclick=item.fn;menuEl.appendChild(el);
+  items.forEach(it=>{
+    if(it.sep){const d=document.createElement('div');d.className='msep';menuEl.appendChild(d);return;}
+    const el=document.createElement('div');
+    el.className='mi';
+    el.innerHTML=`<span style="font-size:14px;width:18px;text-align:center">${it.ic}</span><span>${it.lb}</span>`;
+    el.onclick=it.fn;
+    menuEl.appendChild(el);
   });
   root.appendChild(menuEl);
-  setTimeout(()=>document.addEventListener('click',closeMenuOut),0);
+  setTimeout(()=>document.addEventListener('click',outsideClick),0);
 }
-function closeMenuOut(e){if(menuEl&&!menuEl.contains(e.target)){closeMenu();document.removeEventListener('click',closeMenuOut);}}
+
+function outsideClick(e){if(menuEl&&!menuEl.contains(e.target)){closeMenu();document.removeEventListener('click',outsideClick);}}
 
 function openSubModal(day,row){
-  closeOverlay();
+  closeModal();
   const plan=getPlan();
-  const current=plan[day][row].sub;
-  window._pickedSub=current;
-  overlayEl=document.createElement('div');
-  overlayEl.className='overlay';
-  const pills=S.subs.map(s=>{
-    const p=pal(s);
-    return `<div class="spill${s.name===current?' sel':''}" style="background:${p.l};border-left-color:${p.c};color:${p.d}"
-      onclick="pickSub('${s.name}',this)">${s.name}</div>`;
-  }).join('');
-  overlayEl.innerHTML=`<div class="modal">
-    <h3>Change subject</h3>
-    <div class="modal-sub">${day} · ${ROWS[row].t}</div>
-    <div class="sub-picker">${pills}</div>
-    <div class="modal-btns">
-      <button onclick="closeOverlay()">Cancel</button>
-      <button class="save" onclick="applySubEdit('${day}',${row})">Save</button>
-    </div>
-  </div>`;
-  overlayEl.onclick=e=>{if(e.target===overlayEl)closeOverlay();};
-  document.getElementById('root').appendChild(overlayEl);
+  const cur=plan[day][row].sub;
+  window._se={day,row,sub:cur};
+  const root=document.getElementById('root');
+  modalEl=document.createElement('div');
+  modalEl.className='overlay';
+  modalEl.style.minHeight=root.scrollHeight+'px';
+  const pills=S.subs.map(s=>{const p=pal(s);return `<div class="sp${s.name===cur?' sel':''}" style="background:${p.bg};border-left-color:${p.c};color:${p.dk}" onclick="pickSub('${s.name}',this)">${s.name}</div>`;}).join('');
+  modalEl.innerHTML=`<div class="modal"><h3>Change subject</h3><div class="modal-sub">${day} · ${ROWS[row].t}</div><div class="sub-picker">${pills}</div><div class="mbtns"><button onclick="closeModal()">Cancel</button><button class="save" onclick="applySubEdit()">Save</button></div></div>`;
+  root.appendChild(modalEl);
+  modalEl.onclick=e=>{if(e.target===modalEl)closeModal();};
 }
 
 function pickSub(name,el){
-  window._pickedSub=name;
-  document.querySelectorAll('.spill').forEach(e=>e.classList.remove('sel'));
+  document.querySelectorAll('.sp').forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel');
+  window._se.sub=name;
 }
 
-function applySubEdit(day,row){
-  const p=window._pickedSub;if(!p)return;
-  getPlan()[day][row].sub=p;
-  save();renderTable();updateStats();closeOverlay();
+function applySubEdit(){
+  const{day,row,sub}=window._se||{};
+  if(!day||!sub)return;
+  getPlan()[day][row].sub=sub;
+  save();renderTable();updateStats();closeModal();
+}
+
+function openSlotColor(day,row){
+  closeModal();
+  const plan=getPlan();
+  const subName=plan[day][row].sub;
+  const s=subByName(subName);
+  if(!s)return;
+  const idx=S.subs.indexOf(s);
+  window._sc={idx,pi:s.pi};
+  const root=document.getElementById('root');
+  modalEl=document.createElement('div');
+  modalEl.className='overlay';
+  modalEl.style.minHeight=root.scrollHeight+'px';
+  const swatches=PALS.map((p,pi)=>`<div class="sw${s.pi===pi?' sel':''}" style="background:${p.c}" onclick="pickSlotColor(${pi},this)"></div>`).join('');
+  modalEl.innerHTML=`<div class="modal"><h3>Change colour</h3><div class="modal-sub">Applies to all "${subName}" slots</div><div class="swatches">${swatches}</div><div class="mbtns"><button onclick="closeModal()">Cancel</button><button class="save" onclick="applySlotColor()">Save</button></div></div>`;
+  root.appendChild(modalEl);
+  modalEl.onclick=e=>{if(e.target===modalEl)closeModal();};
+}
+
+function pickSlotColor(pi,el){
+  document.querySelectorAll('.sw').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  window._sc.pi=pi;
+}
+
+function applySlotColor(){
+  const{idx,pi}=window._sc||{};
+  if(idx===undefined)return;
+  S.subs[idx].pi=pi;
+  save();renderSubList();renderLegend();renderTable();closeModal();
 }
 
 function toggleDone(day,row){
@@ -420,8 +369,84 @@ function toggleDone(day,row){
   save();renderTable();updateStats();
 }
 
-// drag
-let dragSrc=null;
+function renderLegend(){
+  document.getElementById('leg').innerHTML=S.subs.map(s=>`<span class="leg"><span class="leg-dot" style="background:${pal(s).c}"></span>${s.name}</span>`).join('');
+}
+
+function renderTable(){
+  closeMenu();
+  const plan=getPlan();
+  let h=`<thead><tr><th class="tc">Time</th>${DAYS.map(d=>`<th>${d}</th>`).join('')}</tr></thead><tbody>`;
+  ROWS.forEach((row,ri)=>{
+    if(row.tp==='b'){
+      h+=`<tr><td class="tcell" style="font-size:9px">${row.t}</td><td colspan="7"><div class="break-bar">${row.tag}</div></td></tr>`;
+    } else if(row.tp==='l'){
+      h+=`<tr><td class="tcell" style="font-size:9px">${row.t}</td><td colspan="7"><div class="lunch-bar">${row.tag}</div></td></tr>`;
+    } else {
+      h+=`<tr><td class="tcell">${row.t}</td>`;
+      DAYS.forEach(day=>{
+        const cell=plan[day]&&plan[day][ri];
+        if(!cell){h+=`<td></td>`;return;}
+        const{sub,done}=cell;
+        const s=subByName(sub)||{name:sub,pi:0};
+        const p=pal(s);
+        h+=`<td><div class="slot${done?' done':''}" draggable="true" style="background:${p.bg};border-left-color:${p.c}" data-day="${day}" data-row="${ri}" ondragstart="dS(event)" ondragend="dE(event)" ondragover="dO(event)" ondrop="dP(event)">
+          <span class="sname" style="color:${p.dk}">${sub}</span>
+          <span class="sdur" style="color:${p.dk}">1 hour</span>
+          ${done?`<span class="done-badge" style="color:${p.c}">✓</span>`:''}
+          <button class="dots-btn" style="color:${p.dk}" onclick="openMenu('${day}',${ri},this);event.stopPropagation()">···</button>
+        </div></td>`;
+      });
+      h+='</tr>';
+    }
+  });
+  h+='</tbody>';
+  document.getElementById('tt').innerHTML=h;
+}
+
+function updateStats(){
+  const plan=getPlan();
+  let done=0,tot=0;
+  const subHrs={};
+  S.subs.forEach(s=>subHrs[s.name]=0);
+  DAYS.forEach(day=>SROWS.forEach(ri=>{
+    const cell=plan[day]&&plan[day][ri];
+    if(!cell)return;
+    tot++;
+    if(cell.done){done++;if(subHrs[cell.sub]!==undefined)subHrs[cell.sub]++;}
+  }));
+  document.getElementById('st1').textContent=done;
+  document.getElementById('st2').textContent=done+'h';
+
+  const bd=document.getElementById('time-breakdown');
+  bd.innerHTML=S.subs.map((s,i)=>{
+    const hrs=subHrs[s.name]||0;
+    const p=pal(s);
+    const pct=done?Math.round((hrs/done)*100):0;
+    document.getElementById('subtime-'+i)&&(document.getElementById('subtime-'+i).textContent=hrs+'h');
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="font-size:11px;color:var(--text2);width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0">${s.name}</span>
+      <div style="flex:1;height:5px;background:var(--border);border-radius:3px"><div style="height:100%;width:${pct}%;background:${p.c};border-radius:3px"></div></div>
+      <span style="font-size:11px;color:var(--text3);width:24px;text-align:right">${hrs}h</span>
+    </div>`;
+  }).join('');
+
+  S.subs.forEach((s,i)=>{
+    const el=document.getElementById('subtime-'+i);
+    if(el)el.textContent=(subHrs[s.name]||0)+'h';
+  });
+}
+
+function chWk(d){
+  S.wk=Math.max(0,Math.min(7,S.wk+d));
+  save();
+  document.getElementById('wlbl').textContent=`Week ${S.wk+1} — ${WK_STARTS[S.wk]}`;
+  document.getElementById('hdr-wk').textContent=WK_STARTS[S.wk];
+  document.getElementById('pb').disabled=S.wk===0;
+  document.getElementById('nb').disabled=S.wk===7;
+  renderTable();updateStats();
+}
+
 function dS(e){dragSrc=e.currentTarget;dragSrc.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
 function dE(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));}
 function dO(e){e.preventDefault();e.currentTarget.classList.add('drag-over');}
@@ -436,18 +461,8 @@ function dP(e){
   save();renderTable();updateStats();
 }
 
-function chWeek(d){
-  S.wk=Math.max(0,Math.min(7,S.wk+d));save();
-  document.getElementById('wlbl').textContent=`Week ${S.wk+1} — ${WS[S.wk]}`;
-  document.getElementById('hwk').textContent=WS[S.wk];
-  document.getElementById('pb').disabled=S.wk===0;
-  document.getElementById('nb').disabled=S.wk===7;
-  renderTable();updateStats();
-}
-
-// init
-document.getElementById('wlbl').textContent=`Week ${S.wk+1} — ${WS[S.wk]}`;
-document.getElementById('hwk').textContent=WS[S.wk];
+document.getElementById('wlbl').textContent=`Week ${S.wk+1} — ${WK_STARTS[S.wk]}`;
+document.getElementById('hdr-wk').textContent=WK_STARTS[S.wk];
 document.getElementById('pb').disabled=S.wk===0;
 document.getElementById('nb').disabled=S.wk===7;
 renderSubList();renderLegend();renderTable();updateStats();
